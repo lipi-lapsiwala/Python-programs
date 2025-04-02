@@ -1,0 +1,67 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+
+#
+# Complete the 'minTime' function below.
+#
+# The function is expected to return a LONG_INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER_ARRAY files
+#  2. INTEGER numCores
+#  3. INTEGER limit
+#
+
+def minTime(files, numCores, limit):
+    total_time = 0
+    parallel_executed = 0  # Count of parallelizable files executed
+
+    parallel_candidates = []
+
+    # Step 1: Classify files into parallelizable and non-parallelizable
+    for file in files:
+        if file % numCores == 0:
+            parallel_candidates.append(file)  # Can be parallelized
+        else:
+            total_time += file  # Directly add sequential execution time
+
+    # Step 2: Sort parallelizable files in descending order to prioritize large ones
+    parallel_candidates.sort(reverse=True)
+
+    # Step 3: Execute at most 'limit' files in parallel
+    for i in range(len(parallel_candidates)):
+        if parallel_executed < limit:
+            total_time += parallel_candidates[i] // numCores
+            parallel_executed += 1
+        else:
+            total_time += parallel_candidates[i]  # Process remaining in normal time
+
+    return total_time
+
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    files_count = int(input().strip())
+
+    files = []
+
+    for _ in range(files_count):
+        files_item = int(input().strip())
+        files.append(files_item)
+
+    numCores = int(input().strip())
+
+    limit = int(input().strip())
+
+    result = minTime(files, numCores, limit)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
