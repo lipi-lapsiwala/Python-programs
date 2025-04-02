@@ -6,8 +6,6 @@ import random
 import re
 import sys
 
-
-
 #
 # Complete the 'minTime' function below.
 #
@@ -47,9 +45,7 @@ def minTime(files, numCores, limit):
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
-
     files_count = int(input().strip())
-
     files = []
 
     for _ in range(files_count):
@@ -57,11 +53,7 @@ if __name__ == '__main__':
         files.append(files_item)
 
     numCores = int(input().strip())
-
     limit = int(input().strip())
-
     result = minTime(files, numCores, limit)
-
     fptr.write(str(result) + '\n')
-
     fptr.close()
