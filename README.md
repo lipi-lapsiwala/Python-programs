@@ -1,2 +1,2 @@
 # Python-Udemy
-Python course praactice from Udemy
+Python course practice problems from Udemy
