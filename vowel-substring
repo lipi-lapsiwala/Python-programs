@@ -1,0 +1,71 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+#
+# Complete the 'findSubstring' function below.
+#
+# The function is expected to return a STRING.
+# The function accepts following parameters:
+#  1. STRING s
+#  2. INTEGER k
+#
+
+def findSubstring(s: str, k: int) -> str:
+    # Validate input constraints
+    if not (1 <= len(s) <= 2 * 10**5) or not (1 <= k <= len(s)):
+        return "Error: Invalid input!"
+
+    vowels = {'a', 'e', 'i', 'o', 'u'}
+    max_vowel_count_in_substr = 0
+    current_substr_vowel_count = 0
+    max_vowel_substr_start_index = 0
+
+    # Initial vowel count in the first window
+    for i in range(k):
+        if s[i] in vowels:
+            current_substr_vowel_count += 1
+
+    max_vowel_count_in_substr = current_substr_vowel_count
+
+    # Sliding window
+    for window_end_index in range(k, len(s)):
+        window_start_index = window_end_index - k  # Start of the window
+
+        # Add new character
+        if s[window_end_index] in vowels:
+            current_substr_vowel_count += 1
+
+        # Remove old character
+        if s[window_start_index] in vowels:
+            current_substr_vowel_count -= 1
+
+        # Update max vowel count and starting index
+        if current_substr_vowel_count > max_vowel_count_in_substr:
+            max_vowel_count_in_substr = current_substr_vowel_count
+            max_vowel_substr_start_index = window_start_index + 1  # Move to new start
+
+    # If no vowels found in any substring
+    if max_vowel_count_in_substr == 0:
+        return "Not found!"
+
+    # Extract and return the substring with max vowels
+    return s[max_vowel_substr_start_index:max_vowel_substr_start_index + k]
+    
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    s = input()
+
+    k = int(input().strip())
+
+    result = findSubstring(s, k)
+
+    fptr.write(result + '\n')
+
+    fptr.close()
